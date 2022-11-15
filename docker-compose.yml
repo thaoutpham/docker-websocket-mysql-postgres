@@ -1,0 +1,58 @@
+version: '3.9'
+services:
+#  postgres:
+#    container_name: postgres
+#    image: postgres:14.3
+#    environment:
+#      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+#      PGDATE: /data/postgres
+#      TZ: "GMT0"
+#    volumes:
+#      - postgres:/data/postgres
+#      - ./src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+#    ports:
+#    - "5432:5432"
+#    networks:
+#      - docker-system
+#    restart: unless-stopped
+
+  mysql:
+    container_name: mysql
+    image: mysql/mysql-server:8.0
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+        MYSQL_USER: ${POSTGRES_USER:-thaopt}
+        MYSQL_PASSWORD: ${POSTGRES_USER:-password}
+#        name DATABASE : thaopt
+        MYSQL_DATABASE: thaopt
+    ports:
+        - "3308:3306"
+    networks:
+      - docker-system
+
+#  docker-example:
+#    container_name: docker-example
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+#    env_file:
+#      - ./.env
+#    ports:
+#    - "8080:9090"
+#    depends_on:
+##      - postgres
+#      - mysql
+#    networks:
+#      - docker-system
+
+networks:
+  docker-system:
+    name: docker-network
+
+volumes:
+  postgres:
+  mysql-data:
+    driver: local
